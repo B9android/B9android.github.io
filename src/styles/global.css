@@ -1,0 +1,33 @@
+html {
+    background-color: #0c0c0c;
+    color: #d3d7cf;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+body {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 80ch;
+    padding: 1rem;
+    line-height: 1.5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    margin: 1rem 0;
+    font-size: 2.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: #5555cf;
+    padding: 1rem;
+}
+
+a:hover {
+    color: #8181ce;
+    background-color: #111111;
+}
