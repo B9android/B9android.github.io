@@ -3,13 +3,29 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>The Hushline</title>
-        <link rel="stylesheet" href="">
+        <title>My Deadlock Statistics</title>
+        <style>
+
+        </style>
     </head>
     <body>
-        <h1>The Hushline</h1>
-        <h2>Deadlock Rank</h2>
-        <div id="rank"></div>
-        <script src="script.js"></script>
+        <h1>My Deadlock Statistics</h1>
+        <div id="loading" class="loading">Loading stats...</div>
+        <div id="error" class="error" style="display: none;"></div>
+
+
+        <div id="quick-stats"></div>
+
+        <script src="deadlock-stats.js"></script>
+        <script>
+            const ACCOUNT_ID = '105130498';
+
+            DeadlockStats.fetch(ACCOUNT_ID).then(stats => {
+                if (!stats) return;
+                document.getElementById('quick-stats').innerHTML = `
+                    <p>${stats.wins}W - ${stats.losses}L (${stats.winRate}% WR) | ${stats.kda} KDA</p>
+                `;
+            });
+        </script>
     </body>
 </html>
