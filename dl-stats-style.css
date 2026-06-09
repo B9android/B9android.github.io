@@ -1,0 +1,413 @@
+/* ── Fonts ────────────────────────────────────────────────────────────── */
+@font-face {
+    font-family: 'Charter';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('fonts/charter_regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Charter';
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+    src: url('fonts/charter_italic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Charter';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url('fonts/charter_bold.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Charter';
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+    src: url('fonts/charter_bold_italic.woff2') format('woff2');
+}
+
+/* ── Light theme (default) ────────────────────────────────────────────── */
+:root {
+    --bg:           #faf9f7;
+    --fg:           #1a1a1a;
+    --fg-muted:     #555;
+    --fg-faint:     #6b6b6b;   /* was #888 — lifted to ~5.4:1 on #faf9f7 */
+    --border:       #ddd;
+    --border-heavy: #ccc;
+    --border-light: #ebebeb;
+
+    /* sparse accent: muted ochre for light, sage for dark */
+    --accent:       #7a6c4a;   /* aged ink ochre */
+    --accent-link:  #3d5a52;   /* muted forest */
+    --accent-hover: #1f3d34;
+
+    --skip-bg:      #1a1a1a;
+    --skip-fg:      #faf9f7;
+    --color-win:  #3a5e3a;   /* dark muted forest green */
+    --color-loss: #7a3030;   /* dark muted brick red */
+}
+
+/* ── Dark theme ───────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg:           #141210;   /* very dark warm brown-black, like printer's ink */
+        --fg:           #ddd5c0;   /* aged parchment, not pure white */
+        --fg-muted:     #8a8070;   /* warm stone */
+        --fg-faint:     #958472;   /* was #5c5448 — lifted to ~4.6:1 on #141210 */
+        --border:       #2e2a22;   /* barely-there warm rule */
+        --border-heavy: #3d3830;
+        --border-light: #1f1d18;
+
+        --accent:       #b5a06e;   /* muted gold — like gilded chapter headings */
+        --accent-link:  #7aaa96;   /* dusty sage — low saturation, dignified */
+        --accent-hover: #a0cfc0;
+
+        --skip-bg:      #ddd5c0;
+        --skip-fg:      #141210;
+        --color-win:  #7aaa7a;   /* sage green — matches the link palette */
+        --color-loss: #c07a6a;   /* dusty terracotta — warm, not neon red */
+    }
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: 'Charter', Georgia, serif;
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.2rem);
+    line-height: 1.65;
+    color: var(--fg);
+    background: var(--bg);
+    max-width: 72ch;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+}
+
+/* ── Skip link ────────────────────────────────────────────────────────── */
+body > a:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5em 1em;
+    background: var(--skip-bg);
+    color: var(--skip-fg);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transform: translateY(-100%);
+    transition: transform 0.1s;
+}
+body > a:first-child:focus { transform: translateY(0); }
+
+/* ── Focus ────────────────────────────────────────────────────────────── */
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* ── Headings ─────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+    line-height: 1.2;
+    font-weight: 700;
+    margin-top: 2.5em;
+    margin-bottom: 0.4em;
+    color: var(--fg);
+}
+h1 {
+    font-size: clamp(1.6rem, 3vw + 0.5rem, 2.2rem);
+    margin-top: 0;
+    letter-spacing: -0.01em;
+}
+h2 {
+    font-size: 1.35rem;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 0.2em;
+    /* accent underline: the one moment of color on each section break */
+    opacity: 1;
+}
+h3 { font-size: 1.1rem; }
+
+/* ── Header & footer ──────────────────────────────────────────────────── */
+header { margin-bottom: 2.5rem; }
+header h1 { color: var(--fg); }
+header p {
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+    margin-top: 0.3em;
+}
+header strong {
+    color: var(--accent);
+    font-style: italic;
+}
+footer {
+    margin-top: 4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--fg-faint);
+}
+
+/* ── Nav ──────────────────────────────────────────────────────────────── */
+nav { margin-bottom: 3rem; }
+nav h2 {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg-faint);
+    border: none;
+    margin-bottom: 0.5em;
+    padding-bottom: 0;
+}
+nav ol {
+    margin: 0;
+    padding-left: 1.5em;
+    font-size: 0.95rem;
+    line-height: 1.9;
+}
+
+/* ── Links ────────────────────────────────────────────────────────────── */
+a {
+    color: var(--accent-link);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--accent-link) 40%, transparent);
+}
+a:visited { color: var(--fg-muted); }
+a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: var(--accent-hover);
+}
+
+/* ── Definition lists ─────────────────────────────────────────────────── */
+dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25em 2.5em;
+    font-size: 0.95rem;
+}
+dt {
+    color: var(--fg-muted);
+    font-style: italic;
+    white-space: nowrap;
+}
+dd {
+    margin: 0;
+    color: var(--fg);
+    font-feature-settings: "kern" 1, "tnum" 1;
+}
+
+/* ── Tables ───────────────────────────────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    font-feature-settings: "kern" 1, "tnum" 1;
+    margin-top: 1rem;
+}
+caption {
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--fg-faint);
+    text-align: left;
+    margin-bottom: 0.6em;
+}
+th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.73rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--accent);          /* accent color on column labels only */
+    border-bottom: 1px solid var(--border-heavy);
+    padding: 0.4em 0.75em 0.4em 0;
+}
+td {
+    padding: 0.5em 0.75em 0.5em 0;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+    color: var(--fg);
+}
+tr:last-child td { border-bottom: none; }
+td:not(:first-child), th:not(:first-child) {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Figures & SVG ────────────────────────────────────────────────────── */
+figure { margin: 1.5rem 0; }
+figcaption {
+    font-size: 0.8rem;
+    color: var(--fg-faint);
+    font-style: italic;
+    margin-top: 0.6em;
+}
+svg { display: block; }
+
+/* ── Sections ─────────────────────────────────────────────────────────── */
+section { margin-bottom: 4rem; }
+
+/* ── Stat grid (overview cards) ──────────────────────────────────────── */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background-color: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 1.5rem 0 2.25rem;
+}
+.stat-card {
+    background: var(--bg);
+    padding: 1.15rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+}
+.stat-value {
+    font-size: clamp(1.3rem, 2.5vw + 0.4rem, 1.65rem);
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+}
+.stat-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--fg-muted);
+    font-style: normal;
+    margin-top: 0.15em;
+}
+.stat-sub {
+    font-size: 0.78rem;
+    color: var(--fg-faint);
+    font-style: italic;
+    margin-top: 0.05em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Overview detail DL ───────────────────────────────────────────────── */
+.overview-dl {
+    margin-top: 0.5rem;
+}
+
+/* ── Win-rate bar ─────────────────────────────────────────────────────── */
+.wr-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+.wr-bar-track {
+    display: inline-block;
+    width: 3.6em;
+    height: 0.42em;
+    background: var(--border-heavy);
+    border-radius: 1px;
+    overflow: hidden;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+.wr-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--fg-faint);
+}
+.wr-bar-fill.good { background: var(--color-win); }
+.wr-bar-fill.bad  { background: var(--color-loss); }
+
+/* ── KDA cell ─────────────────────────────────────────────────────────── */
+.kda-cell {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.85em;
+    color: var(--fg-muted);
+}
+
+/* ── Footnote / note span ─────────────────────────────────────────────── */
+.note {
+    font-size: 0.82em;
+    color: var(--fg-faint);
+    font-style: italic;
+}
+
+/* ── Scrollable table wrapper ─────────────────────────────────────────── */
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 1rem;
+}
+.table-scroll table { margin-top: 0; }
+
+/* ── Win / Loss results ───────────────────────────────────────────────── */
+td.win  { color: var(--color-win);  font-style: italic; font-weight: 600; }
+td.loss { color: var(--color-loss); font-style: italic; }
+
+/* ── Hero icons ───────────────────────────────────────────────────────── */
+/* Decorative inline portraits in table cells and definition lists.       */
+.hero-icon {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 0;
+    margin-right: 0.35em;
+}
+.hero-icon img {
+    border-radius: 3px;
+    display: block;
+}
+
+/* ── Rank badge ───────────────────────────────────────────────────────── */
+/* Inline rank badge beside the rank label in the page header.            */
+.rank-badge {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 0;
+    margin-right: 0.4em;
+}
+.rank-badge img {
+    display: block;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 400px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .stat-value { font-size: 1.25rem; }
+}
+@media (max-width: 520px) {
+    table { font-size: 0.8rem; }
+    dl { grid-template-columns: 1fr; }
+    dt { margin-top: 0.5em; }
+    .wr-bar-track { width: 2.8em; }
+}
+
+/* ── SVG theming (color-scheme-aware) ────────────────────────────────── */
+.chart-grid      { stroke: var(--border-heavy); stroke-width: 0.75; stroke-dasharray: 4 3; fill: none; }
+.chart-label     { fill: var(--fg-muted); font-family: sans-serif; font-size: 11px; }
+.chart-end-label { fill: var(--fg); font-weight: bold; }
+.chart-line      { stroke: var(--fg); }
+.chart-dot       { fill: var(--fg); }
+.map-border       { stroke: var(--border-heavy); }
+.map-kill         { fill: var(--fg); }
+.map-death        { fill: var(--color-loss); }
+.map-legend-kill  { fill: var(--fg);         font-size: 11px; }
+.map-legend-death { fill: var(--color-loss); font-size: 11px; }
+
+/* ── Forced colors / high contrast mode ──────────────────────────────── */
+@media (forced-colors: active) {
+    .chart-line, .chart-dot { stroke: ButtonText; fill: ButtonText; }
+    .map-kill               { fill: ButtonText; }
+    .map-death              { fill: LinkText; }
+    .wr-bar-fill            { forced-color-adjust: none; }
+    .stat-grid              { background-color: ButtonText; }
+}

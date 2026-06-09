@@ -1,31 +1,221 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>My Deadlock Statistics</title>
-        <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>thehushline — lexington</title>
 
-        </style>
-    </head>
-    <body>
-        <h1>My Deadlock Statistics</h1>
-        <div id="loading" class="loading">Loading stats...</div>
-        <div id="error" class="error" style="display: none;"></div>
+    <!-- Tells IndieWeb tooling where your identity lives -->
+    <link rel="canonical" href="https://thehushline.com/" />
 
+    <!-- rel="me" in <head> for platforms that need it (e.g. Mastodon) -->
+    <link rel="me" href="https://github.com/YOURUSERNAME" />
+    <link rel="me" href="https://mastodon.social/@YOURUSERNAME" />
+    <!--
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <div id="quick-stats"></div>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f0f0f;
+      color: #e8e8e8;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      line-height: 1.6;
+    }
 
-        <script src="deadlock-stats.js"></script>
-        <script>
-            const ACCOUNT_ID = '105130498';
+    /* h-card / identity block */
+    .h-card {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
 
-            DeadlockStats.fetch(ACCOUNT_ID).then(stats => {
-                if (!stats) return;
-                document.getElementById('quick-stats').innerHTML = `
-                    <p>${stats.wins}W - ${stats.losses}L (${stats.winRate}% WR) | ${stats.kda} KDA</p>
-                `;
-            });
-        </script>
-    </body>
+    .u-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #333;
+    }
+
+    .identity h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .identity .handle {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .p-note {
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    /* Social / rel-me links */
+    .rel-me-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .rel-me-links a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.85rem;
+      border: 1px solid #333;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .rel-me-links a:hover {
+      color: #fff;
+      border-color: #666;
+    }
+
+    /* Projects / Links */
+    h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .project-card {
+      background: #181818;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 1rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: #555;
+    }
+
+    .project-card .label {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 0.25rem;
+    }
+
+    .project-card .name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .project-card .desc {
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 0.3rem;
+    }
+
+    footer {
+      font-size: 0.8rem;
+      color: #555;
+      border-top: 1px solid #1e1e1e;
+      padding-top: 1.5rem;
+    }
+
+    footer a { color: #666; text-decoration: none; }
+    footer a:hover { color: #aaa; }
+
+    @media (max-width: 480px) {
+      .project-grid { grid-template-columns: 1fr; }
+      .h-card { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+  --></head>
+
+  <body class="h-card">
+   
+    <header>
+      <!-- url/identity -->
+      <h1><a class="u-url u-uid" href="https://thehushline.com/" rel="me">thehushline.com</a></h1>
+    </header>
+      <!-- pfp -->
+      <img class="u-photo" src="pfp.png" alt="lexington, a werewolf girl with wild hair" />
+      <!-- name-->
+      <span class="p-name">lexington</span>
+      <!-- nickname/handle -->
+      <span class="p-nickname">LexingtonVT</span>
+      <span class="p-nickname">B9android</span>
+      <!-- email -->
+      <a class="u-email" href="mailto:lexington@thehushline.com">lexington@thehushline.com</a>
+      
+      <!-- tags -->
+      <span class="p-category">lgbtq</span>
+      <span class="p-category">trans</span>
+      <span class="p-category">gaming</span>
+      <!-- location -->
+      <span class="p-country-name">united states</span>
+      <!-- birthday -->
+      <time class="dt-bday" datetime="--07-09">--07-09</time>
+      <!-- note -->
+      <p class="p-note">stupid trans gamer girl. i write code and play games.</p>
+      <!-- pronouns -->
+      <span class="p-pronoun-nominative">she</span>
+      <span class="p-pronoun-oblique">her</span>
+      <span class="p-pronoun-possessive">hers</span>
+      <!-- sexual orientation -->
+      <span class="p-sexual-orientation">heck if i know lol</span>
+
+  
+
+    <!-- rel="me" links -->
+    <div class="rel-me-links">
+      <a rel="me" href="https://github.com/B9android">GitHub</a>
+      <a rel="me" href="https://mastodon.social/@B9android">Mastodon</a>
+      <a rel="me" href="https://steamcommunity.com/profiles/76561198065396226/">Steam</a>
+      <a rel="me atproto" href="https://bsky.app/profile/lexingtonvt.bsky.social">Bluesky</a>
+      <!-- Add or remove as needed -->
+      <a href="mailto:lexington@thehushline.com">Email</a>
+    </div>
+
+    <!-- =============================================
+       Projects / Links section
+       Your Deadlock stats page lives here
+       ============================================= -->
+    <h2>projects &amp; pages</h2>
+
+    <div class="project-grid">
+      <a class="project-card" href="dl-stats.html">
+        <div class="label">🎮 stats</div>
+        <div class="name">Deadlock Stats</div>
+        <div class="desc">
+          My match history, hero stats, and performance tracker.
+        </div>
+      </a>
+
+      <!-- Add more cards here as your site grows -->
+      <!-- Example:
+    <a class="project-card" href="/notes">
+      <div class="label">📝 writing</div>
+      <div class="name">Notes</div>
+      <div class="desc">Thoughts on games, code, and whatever else.</div>
+    </a>
+    --></div>
+
+    <!-- footer -->
+    <footer>
+      <p>&copy; 2026 <a href="/" class="u-url">thehushline.com</a></p>
+    </footer>
+  </body>
 </html>
